@@ -49,7 +49,9 @@ This problems occures because the NodeJS tool [speedtest.net](https://github.com
     {
       "accessory": "SpeedtestNet",
       "name": "Internet",
-      "interval": 60
+      "interval": 60,
+      "fahrenheit": true,
+      "debug": false
     }
   ]
 }
@@ -62,7 +64,9 @@ This problems occures because the NodeJS tool [speedtest.net](https://github.com
 |------------|----------|-------|
 | accessory | **Yes** | Must be "SpeedtestNet" |
 | name | No | Name for the Accessory (Default: SpeedtestNet) |
-| interval | No | Interval for checing the broadband in mins (Default: 60min) |
+| interval | No | Interval for checking the broadband in mins (Default: 60min) |
+| fahrenheit | No | Use this if your temperature scale is fahrenheit in HomeKit (Default: false) |
+| debug | No | This adds additional logging of SpeedTest data (Default: false) |
 
 
 ## Contributing

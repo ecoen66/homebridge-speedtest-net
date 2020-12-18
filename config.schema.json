@@ -1,0 +1,33 @@
+{
+	"pluginAlias": "SpeedtestNet",
+	"pluginType": "accessory",
+	"schema": {
+   "type": "object",
+   "properties": {
+			"name": {
+				"title": "Name",
+				"type": "string",
+				"default": "Internet",
+				"required": true
+			},
+			"interval": {
+				"title": "Interval",
+				"type": "number",
+				"default": 60,
+				"description": "Interval for checking the broadband in mins."
+			},
+			"fahrenheit": {
+				"title": "Fahrenheit",
+				"type": "boolean",
+				"default": false,
+				"description": "Use this if your temperature scale is fahrenheit in HomeKit."
+			},
+			"debug": {
+				"title": "Debug",
+				"type": "boolean",
+				"default": false,
+				"description": "Enables additional logging of SpeedTest data."
+			}
+		}
+	}
+}

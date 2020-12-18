@@ -23,7 +23,10 @@ function SpeedtestNet(log, config, api) {
   //BASE
   this.name = config['name'] || 'SpeedtestNet';
   this.displayName = config.name;
+  this.fahrenheit = config.fahrenheit || false;
+  this.debug = config.debug || false;
   this.interval = (config.interval * 60 * 1000) || 60 * 60 * 1000;
+  !this.temp ? this.temp = 0 : this.temp;
   !this.dlspeed ? this.dlspeed = 0 : this.dlspeed;
   !this.ulspeed ? this.ulspeed = 0 : this.ulspeed;
   !this.ping ? this.ping = 0 : this.ping;
@@ -156,18 +159,28 @@ SpeedtestNet.prototype = {
           acceptGdpr: true
       });
 
-      self.dlspeed = (data.download.bandwidth * 8 / 1000 / 1000).toFixed(1);
+      self.temp = (data.download.bandwidth * 8 / 1000 / 1000).toFixed(1);
+			if (self.fahrenheit) {
+	      self.dlspeed = self.temp - 32;
+	      self.dlspeed = self.dlspeed * 5 / 9;
+	    } else {
+		    self.dlspeed = self.temp;
+			}
       self.ulspeed = (data.upload.bandwidth * 8/ 1000 / 1000).toFixed(1);
       self.ping = data.ping.latency.toFixed(0);
       self.externalIp = data.interface.externalIp;
 
+			if (self.debug) {
+				self.log('Data:', data);
+			}
+			
       self.log('Download: ' + self.speedText(data.download.bandwidth));
       self.log('Upload: ' + self.speedText(data.upload.bandwidth));
       self.log('Ping: ' + self.ping + ' ms');
       self.log('External IP: ' + self.externalIp);
 
       self.Sensor.getCharacteristic(Characteristic.CurrentTemperature).updateValue(self.dlspeed);
-      self.Sensor.getCharacteristic(Characteristic.DownloadSpeed).updateValue(self.dlspeed);
+      self.Sensor.getCharacteristic(Characteristic.DownloadSpeed).updateValue(self.temp);
       self.Sensor.getCharacteristic(Characteristic.UploadSpeed).updateValue(self.ulspeed);
       self.Sensor.getCharacteristic(Characteristic.Ping).updateValue(self.ping);
       self.Sensor.getCharacteristic(Characteristic.ExternalIp).updateValue(self.externalIp);
@@ -182,8 +195,8 @@ SpeedtestNet.prototype = {
       self.ping = self.ping;
       self.externalIp = self.externalIp;
 
-      self.Sensor.getCharacteristic(Characteristic.CurrentTemperature).updateValue(self.dlspeed);
-      self.Sensor.getCharacteristic(Characteristic.DownloadSpeed).updateValue(self.dlspeed);
+    	self.Sensor.getCharacteristic(Characteristic.CurrentTemperature).updateValue(self.dlspeed);
+      self.Sensor.getCharacteristic(Characteristic.DownloadSpeed).updateValue(self.temp);
       self.Sensor.getCharacteristic(Characteristic.UploadSpeed).updateValue(self.ulspeed);
       self.Sensor.getCharacteristic(Characteristic.Ping).updateValue(self.ping);
       self.Sensor.getCharacteristic(Characteristic.ExternalIp).updateValue(self.externalIp);
@@ -197,12 +210,12 @@ SpeedtestNet.prototype = {
   getHistory: function() {
     const self = this;
 
-    if (self.dlspeed !== 0 && self.ulspeed !== 0 && self.ping !== 0) {
-        self.log('Add history data', self.dlspeed, self.ulspeed, self.ping);
+    if (self.temp !== 0 && self.ulspeed !== 0 && self.ping !== 0) {
+        self.log('Add history data', self.temp, self.ulspeed, self.ping);
 
         self.historyService.addEntry({
           time: new Date().getTime() / 1000,
-          temp: self.Sensor.getCharacteristic(Characteristic.CurrentTemperature).value,
+          temp: self.temp,
           pressure: self.Sensor.getCharacteristic(Characteristic.Ping).value,
           humidity: self.Sensor.getCharacteristic(Characteristic.UploadSpeed).value
         });

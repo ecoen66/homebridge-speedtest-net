@@ -6,7 +6,9 @@
     {
       "accessory": "SpeedtestNet",
       "name": "Internet",
-      "interval": 60
+      "interval": 60,
+      "fahrenheit": true,
+      "debug": false
     }
 ],
  "platforms": [
