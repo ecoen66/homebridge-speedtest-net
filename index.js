@@ -215,7 +215,7 @@ SpeedtestNet.prototype = {
 
         self.historyService.addEntry({
           time: new Date().getTime() / 1000,
-          temp: self.temp,
+          temp: self.Sensor.getCharacteristic(Characteristic.CurrentTemperature).value,
           pressure: self.Sensor.getCharacteristic(Characteristic.Ping).value,
           humidity: self.Sensor.getCharacteristic(Characteristic.UploadSpeed).value
         });
