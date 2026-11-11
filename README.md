@@ -1,3 +1,8 @@
+# THIS CODE IS NO LONGER BEING DEVELOPED/SUPPORTED BY THE AUTHOR
+I have not used homebridge for a few years now, and no longer have a SolarEdge system.
+
+
+
 # homebridge-speedtest-net
 Homebridge Plugin for broadband speed measurement as temperature sensor
 
